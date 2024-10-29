@@ -5,7 +5,8 @@ import App from './App.jsx'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import { StrictMode } from 'react'
 import Home from './pages/Home.jsx'
-import Show from './components/Show.jsx'
+import Show from './pages/Show.jsx'
+import InsertData from './pages/InsertData.jsx'
 
 
 const router  = createBrowserRouter(
@@ -14,6 +15,7 @@ const router  = createBrowserRouter(
     <Route path='/' element={<App />} >
       <Route path='/' element={<Home />} />
       <Route path='/show' element={<Show />} /> 
+      <Route path='/insert' element={<InsertData />} /> 
     </Route>
     </>
   )
