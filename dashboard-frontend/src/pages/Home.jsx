@@ -41,8 +41,7 @@ const Home = () => {
       setIntensity(res.data.data.map((item) => item.intensity))
       setLikelihood(res.data.data.map((item) => item.likelihood))
       setRelevance(res.data.data.map((item) => item.relevance))
-      setStartYear(res.data.data.map((item) => item.start_year))++.
-      3
+      setStartYear(res.data.data.map((item) => item.start_year))
     })
   }
 
