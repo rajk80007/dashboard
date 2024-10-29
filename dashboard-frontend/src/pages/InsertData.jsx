@@ -34,6 +34,12 @@ const InsertData = () => {
                     <ExcelImport setData={setData} />
                     <button type="submit" className="bg-[#613e59] text-white py-2 px-4 rounded">Submit</button>
                 </form>
+                <div className="text-center">
+
+                <span className="text-red-500">
+                    (Note: Please upload .xlsx or .csv file only)
+                </span>
+                </div>
             </div>
 
         </>

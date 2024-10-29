@@ -15,10 +15,12 @@ Route::get('/download', function () {
     ]);
 });
 
-Route::get('/show', function () {
-    $data = Insight::all();
+Route::get('/show', function (Request $request) {
+    $itemsPerPage = $request->itemsPerPage;
+    $data = Insight::paginate($itemsPerPage);
     return response([
         'data' => $data,
+        'totalPages' => $data->lastPage(),
         'status' => 'success',
     ]);
 });
@@ -51,6 +53,14 @@ Route::post('/insert',[InsightController::class, 'insert']);
 Route::get('/delete', function () {
     Insight::truncate();
     return response([
+        'status' => 'success',
+    ]);
+});
+
+Route::get('/getAllData', function () {
+    $data = Insight::all();
+    return response([
+        'data' => $data,
         'status' => 'success',
     ]);
 });

@@ -5,6 +5,9 @@ import ExcelExport from '../components/excelExport';
 const Show = () => {
 
     const [data, setData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const itemsPerPage = 10;
 
     const deleteAll = () => {
         const url = 'http://127.0.0.1:8001/api/delete';
@@ -47,9 +50,9 @@ const Show = () => {
     //         swot: 'swot1',
     //     }
     // ]
-    const showData = () => {
-        const url = 'http://127.0.0.1:8001/api/show';
-        axios.get(url, {
+    const showData = async (page) => {
+        const url = 'http://127.0.0.1:8001/api/show?page=' + page + '&itemsPerPage=' + itemsPerPage;
+        await axios.get(url, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -57,7 +60,9 @@ const Show = () => {
         })
             .then((response) => {
                 console.log(response.data.data);
-                response = Array.from(response.data.data);
+                setTotalPages(response.data.totalPages);
+                console.log(response);
+                response = Array.from(response.data.data.data);
                 setData(response);
                 console.log(data);  
             }).catch((error) => {
@@ -66,8 +71,20 @@ const Show = () => {
     }
     
     useEffect(() => {
-        showData();
-    }, [])
+        showData(currentPage);
+    }, [currentPage]);
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(prevPage => prevPage + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(prevPage => prevPage - 1);
+        }
+    };
 
   return (
     <>
@@ -80,7 +97,7 @@ const Show = () => {
             <button
             onClick={deleteAll}
              className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2 mx-2'>Delete All</button>
-            <table className='w-full border-collapse border-2'>
+            <table className='w-4/5 border-collapse border-2 overflow-y-scroll'>
                 <tr className='border py-2 my-1'>
                     <th>Title</th>
                     <th>Start year</th>
@@ -120,6 +137,17 @@ const Show = () => {
                 ))
                 }
             </table>
+            <div className='flex justify-ccenter my-5 items-center gap-5 mx-auto w-full'>
+                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                onClick={handlePreviousPage} disabled={currentPage === 1}>
+                    Previous
+                </button>
+                <span> Page {currentPage} of {totalPages} </span>
+                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' 
+                onClick={handleNextPage} disabled={currentPage === totalPages}>
+                    Next
+                </button>
+            </div>
         </div>
     </>
   )
