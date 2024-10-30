@@ -16,13 +16,22 @@ const Home = () => {
   const [sources, setSources] = useState([]);
   const [swots, setSwots] = useState([]);
   const [cities, setCities] = useState([]);
-
   const [Intensity, setIntensity] = useState([]);
   const [Likelihood, setLikelihood] = useState([]);
   const [Relevance, setRelevance] = useState([]);
-  
 
-  const newdata = [25,30,25,36,25,56,25]
+  const [Year, setYear] = useState([]);
+
+
+  const newdata = [{
+    name: 'Intensity', count: Intensity.length}, 
+    {name: 'Likelihood', count: Likelihood.length}, 
+    {name: 'Relevance', count: Relevance.length}, 
+    {name: 'Year', count: Year.length},
+    {name: 'Countries', count: countries.length}, 
+    {name: 'Topics', count:topics.length}, 
+    {name: 'Regions', count:regions.length},
+    {name: 'Cities', count:cities.length}];
 
 
   const getAllData = async () => {
@@ -42,6 +51,8 @@ const Home = () => {
       setLikelihood(res.data.data.map((item) => item.likelihood))
       setRelevance(res.data.data.map((item) => item.relevance))
       setStartYear(res.data.data.map((item) => item.start_year))
+      setCountries(res.data.data.map((item) => item.country))
+
     })
   }
 
@@ -53,144 +64,43 @@ const Home = () => {
     <>
       <div className="w-4/5 mx-auto absolute top-20 right-0 px-10 py-5">
         <h1 className="text-2xl font-bold text-center py-5">Dashboarad</h1>
-        
+
         {/* Filter */}
 
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-5 items-center justify-center">
-          <div className="w-full flex gap-5">
-          <label className='text-lg font-bold text-[#413a3a]'> Filter By: </label>
-          </div>
-          <div className="w-full flex gap-5 mx-2">
-            <label className='text-lg font-medium text-[#413a3a] w-[150px]'>End Year</label>
-            <select name="" id="" defaultValue={""} className='text-lg font-medium w-[150px] text-[#413a3a]'>
-              <option value="" disabled>Select</option>
+        <div className='w-full grid grid-cols-4 gap-5'>
+
+          <div className='w-full border shadow-lg p-5 '>
+            <h2 className='text-xl font-bold text-center py-5'>Filter - Pestle</h2>
+            <div className='text-center'>
               {
-                [...new Set(endYear)].map((item) => {
+                [...new Set(pests)].map((item, index) => {
                   return (
-                    <option value={item}>{item}</option>
+                    <div key={index} className='border p-2 cursor-pointer hover:text-[#413a3a] rounded-sm my-1 hover:bg-[#badf7f] bg-gray-100'>{item}</div>
                   )
                 })
               }
+             
+            </div>
 
-            </select>
           </div>
-          <div className="w-full flex gap-5 mx-2">
-            <label className='text-lg font-medium text-[#413a3a]'>Topics</label>
-            <select name="" id="" defaultValue={""} className='text-lg font-medium w-[150px] text-[#413a3a]'>
-              <option value="" disabled>Select</option>
-              {[...new Set(topics)].map((item) => {
-                return (
-                  <option value={item}>{item}</option>
-                )
-              })
 
-              }
-            </select>
+          <div className='col-span-3 flex justify-center items-center w-full border shadow-lg p-5 '>
+          <PieChart data={newdata} />
           </div>
-          <div className="w-full flex gap-5 mx-2">
-            <label className='text-lg font-medium text-[#413a3a]'>Sector</label>
-            <select name="" id="" defaultValue={""} className='text-lg font-medium w-[150px] text-[#413a3a]'>
-              <option value="" disabled>Select</option>
-              {
-                [...new Set(sectors)].map((item) => {
-                  return (
-                    <option value={item}>{item}</option>
-                  )
-                })
-              }
 
-            </select>
-          </div>
-          <div className="w-full flex gap-5 mx-2">
-          <label className='text-lg font-medium text-[#413a3a]'>Region</label>
-          <select name="" id="" defaultValue={""} className='text-lg font-medium w-[150px] text-[#413a3a]'>
-            <option value="" disabled>Select</option>
-            {
-              [...new Set(regions)].map((item) => {
-                return (
-                  <option value={item}>{item}</option>
-                )
-              })
-            }
-          </select>
-          </div>
-          <div className="w-full flex gap-5 mx-2">
-          <label className='text-lg font-medium text-[#413a3a]'>Country</label>
-          <select name="" id="" defaultValue={""} className='text-lg font-medium w-[150px] text-[#413a3a]'>
-            <option value="" disabled>Select</option>
-            {
-              [...new Set(countries)].map((item) => {
-                return (
-                  <option value={item}>{item}</option>
-                )
-              })
-            }
-          </select>
-          </div>
-          <div className='w-full flex gap-5 mx-2'>       
-          <label className='text-lg font-medium text-[#413a3a]'>Pests</label>
-          <select name="" id="" defaultValue={""} className='text-lg font-medium w-[150px] text-[#413a3a]'>
-            <option value="" disabled>Select</option>
-            {
-              [...new Set(pests)].map((item) => {
-                return (
-                  <option value={item}>{item}</option>
-                )
-              })
-            }
-          </select>
-          </div>
-          <div className='w-full flex gap-5 mx-2'>         
-          <label className='text-lg font-medium text-[#413a3a]'>Source</label>
-          <select name="" id="" defaultValue={""} className='text-lg font-medium w-[150px] text-[#413a3a]'>
-            <option value="" disabled>Select</option>
-            {
-              [...new Set(sources)].map((item) => {
-                return (
-                  <option value={item}>{item}</option>
-                )
-              })
-            }
-          </select>
-          </div>
-          <div className='w-full flex gap-5 mx-2'>
-          <label className='text-lg font-medium text-[#413a3a]'>SWOT</label>
-          <select name="" id="" defaultValue={""} className='text-lg font-medium w-[150px] text-[#413a3a]'>
-            <option value="" disabled>Select</option>
-            {
-              [...new Set(swots)].map((item) => {
-                return (
-                  <option value={item}>{item}</option>
-                )
-              })
-            }
-          </select>
-          </div>
-          <div className='w-full flex gap-5 mx-2'>
-          <label className='text-lg font-medium text-[#413a3a]'>City</label>
-          <select name="" id="" defaultValue={""} className='text-lg font-medium w-[150px] text-[#413a3a]'>
-            <option value="" disabled>Select</option>
-            {
-              [...new Set(cities)].map((item) => {
-                return (
-                  <option value={item}>{item}</option>
-                )
-              })
-            }
-          </select>
-          </div>
         </div>
+
 
         {/* BarChart */}
 
         <div className='w-full border shadow-lg p-5'>
           <BarChart data={newdata} />
-            Intensity
-            <PieChart data={newdata} />
+          Intensity
+          
         </div>
 
-        
-        
+
+
 
       </div>
 
