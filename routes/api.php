@@ -64,3 +64,5 @@ Route::get('/getAllData', function () {
         'status' => 'success',
     ]);
 });
+
+Route::post('/filter', [InsightController::class, 'filter']);

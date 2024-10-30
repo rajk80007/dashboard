@@ -32,4 +32,12 @@ class InsightController extends Controller
                 'status' => 'success',
             ]);
         }
+
+    public function filter(Request $request){
+        $data = Insight::where('pest', $request->pests)->get();
+        return response([
+            'data' => $data,
+            'status' => 'success',
+        ]);
+    }
 }

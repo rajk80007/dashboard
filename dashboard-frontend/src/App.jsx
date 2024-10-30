@@ -10,9 +10,12 @@ function App() {
 
   return (
     <>
+      <div className='container'>
+
       <Header />
       <Sidebar />
       <Outlet />
+      </div>
       
 
     </>

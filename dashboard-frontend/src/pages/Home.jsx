@@ -70,10 +70,26 @@ const Home = () => {
     } else {
       setSelectedPest([...selectedPest, item])
     }
+    getFilterData()
+    
+  }
+
+  const getFilterData = () => {
+    axios.post('http://127.0.0.1:8001/api/filter', {pests: selectedPest}, 
+      {
+        headers: {
+          'Accept': 'application/json'
+        }
+      }
+    ).then((res) => {
+      console.log(res.data.data)
+      setIntensity(res.data.data.map((item) => item.intensity))
+    });
   }
   
   useEffect(() => {
     getAllData()
+    getFilterData()
     // setSelectedPest([...new Set(pests)].filter(item => item.length > 0 && item))
   }, [])
 
@@ -85,7 +101,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="w-4/5 mx-auto absolute top-20 right-0 px-10 py-5">
+      <div className="w-4/5 mx-auto absolute top-20 right-0 px-10 py-5 container">
         <h1 className="text-2xl font-bold text-center py-5">Dashboarad</h1>
 
         {/* Filter */}
