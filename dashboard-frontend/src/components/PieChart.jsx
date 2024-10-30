@@ -1,8 +1,33 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import * as d3 from 'd3';
 
 const PieChart = ({ data, width = 400, height = 400 }) => {
     const svgRef = useRef();
+    const colorMapRef = useRef({});
+
+     // Define color scale
+        // const color = d3.scaleOrdinal()
+        // .domain(filteredData.map(d => d.name))
+        // .range(d3.schemeCategory10);
+
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+        data.forEach(d => {
+            if (!colorMapRef.current[d.name]) {
+                colorMapRef.current[d.name] = colorScale(d.name);
+            }
+        });
+        
+
+        // const colorMap = useMemo(() => {
+        //     const uniqueNames = Array.from(new Set(data.map(d => d.name)));
+        //     const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        //     return uniqueNames.reduce((map, name, index) => {
+        //         map[name] = colorScale(name);
+        //         return map;
+        //     }, {});
+        //     }, [data]);
+
 
     useEffect(() => {
         const radius = Math.min(width, height) / 2;
@@ -14,13 +39,10 @@ const PieChart = ({ data, width = 400, height = 400 }) => {
         // Create a pie chart layout
         const pie = d3.pie().value(d => d.count); // Use count for pie chart
         const arc = d3.arc()
-            .innerRadius(50) // Full pie, no hole in the middle
+            .innerRadius(50) 
             .outerRadius(radius);
 
-        // Define color scale
-        const color = d3.scaleOrdinal()
-            .domain(filteredData.map(d => d.name))
-            .range(d3.schemeCategory10);
+       
 
         // Group for positioning the pie chart in the center
         const group = svg
@@ -36,7 +58,7 @@ const PieChart = ({ data, width = 400, height = 400 }) => {
             .enter()
             .append("path")
             .attr("d", arc)
-            .attr("fill", (d, i) => color(filteredData[i].name))
+            .attr("fill", d => colorMapRef.current[d.data.name])
             .attr("stroke", "white")
             .style("stroke-width", "2px");
 
