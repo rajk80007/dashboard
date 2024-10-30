@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->integer('start_year');
             $table->integer('end_year');
-            $table->string('city');
+            $table->string('city')->nullable();
             $table->string('country');
             $table->float('intensity');
             $table->float('likelihood');

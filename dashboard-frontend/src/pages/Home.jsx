@@ -20,6 +20,9 @@ const Home = () => {
   const [Likelihood, setLikelihood] = useState([]);
   const [Relevance, setRelevance] = useState([]);
 
+  
+  const [selectedPest, setSelectedPest] = useState([[...new Set(pests)].filter(item => item.length > 0 && item)]);
+  
   const [Year, setYear] = useState([]);
 
 
@@ -44,20 +47,34 @@ const Home = () => {
       setRegions(res.data.data.map((item) => item.region))
       setCountries(res.data.data.map((item) => item.country))
       setPests(res.data.data.map((item) => item.pest))
+      console.log(pests);
       setSources(res.data.data.map((item) => item.source))
       setSwots(res.data.data.map((item) => item.swot))
       setCities(res.data.data.map((item) => item.city))
-      setIntensity(res.data.data.map((item) => item.intensity))
+      setIntensity([...new Set(res.data.data)].map((item) => item.intensity))
+      
       setLikelihood(res.data.data.map((item) => item.likelihood))
       setRelevance(res.data.data.map((item) => item.relevance))
       setStartYear(res.data.data.map((item) => item.start_year))
       setCountries(res.data.data.map((item) => item.country))
 
     })
+    // setSelectedPest([...new Set(pests)].filter(item => item.length > 0 && item))
   }
-
+  
+  console.log(selectedPest);
+  
+  const togglePest = (item) => {
+    if (selectedPest.includes(item)) {
+      setSelectedPest(selectedPest.filter((pest) => pest !== item))
+    } else {
+      setSelectedPest([...selectedPest, item])
+    }
+  }
+  
   useEffect(() => {
     getAllData()
+    setSelectedPest([...new Set(pests)].filter(item => item.length > 0 && item))
   }, [])
 
   return (
@@ -74,8 +91,9 @@ const Home = () => {
             <div className='text-center'>
               {
                 [...new Set(pests)].map((item, index) => {
-                  return (
-                    <div key={index} className='border p-2 cursor-pointer hover:text-[#413a3a] rounded-sm my-1 hover:bg-[#badf7f] bg-gray-100'>{item}</div>
+                  return ( item.length > 0 &&
+                    <div onClick={() => togglePest(item)}
+                    key={index} className={` ${selectedPest.includes(item) ? 'bg-green-500 text-white' : ''} border p-2 cursor-pointer font-bold duration-300 transition rounded-sm my-1 hover:bg-green-500 hover:text-white bg-gray-100`}>{item}</div>
                   )
                 })
               }
