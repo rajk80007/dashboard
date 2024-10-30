@@ -37,8 +37,8 @@ const Home = () => {
     {name: 'Cities', count:cities.length}];
 
 
-  const getAllData = async () => {
-    await axios.get('http://127.0.0.1:8001/api/getAllData').then((res) => {
+  const getAllData = () => {
+    axios.get('http://127.0.0.1:8001/api/getAllData').then((res) => {
       console.log(res.data.data)
       setData(res.data.data)
       setEndYear(res.data.data.map((item) => item.end_year))
@@ -57,9 +57,9 @@ const Home = () => {
       setRelevance(res.data.data.map((item) => item.relevance))
       setStartYear(res.data.data.map((item) => item.start_year))
       setCountries(res.data.data.map((item) => item.country))
+      setSelectedPest([...new Set(pests)].filter(item => item.length > 0 && item))
 
     })
-    // setSelectedPest([...new Set(pests)].filter(item => item.length > 0 && item))
   }
   
   console.log(selectedPest);
@@ -74,8 +74,14 @@ const Home = () => {
   
   useEffect(() => {
     getAllData()
-    setSelectedPest([...new Set(pests)].filter(item => item.length > 0 && item))
+    // setSelectedPest([...new Set(pests)].filter(item => item.length > 0 && item))
   }, [])
+
+  useEffect(() => {
+    if (pests.length > 0) {
+      setSelectedPest([...new Set(pests)].filter(item => item.length > 0 && item))
+    }
+  }, [pests])
 
   return (
     <>
