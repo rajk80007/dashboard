@@ -5,7 +5,7 @@ import {Spinner} from '@material-tailwind/react';
 
 const Home = () => {
 
-  const url = 'https://dash.rajkushdev.com/public/api';
+  const url = 'http://127.0.0.1:8001/api';
 
   // API State Variables
   const [data, setData] = useState([])

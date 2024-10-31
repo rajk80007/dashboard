@@ -9,7 +9,7 @@ const InsertData = () => {
     const handleUpload = (e) => {  
         e.preventDefault()
 
-        axios.post('https://dash.rajkushdev.com/public/api/insert', 
+        axios.post('http://127.0.0.1:8001/api/insert', 
              data, {
             headers: {
                 'Accept': 'application/json'
