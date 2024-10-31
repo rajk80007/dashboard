@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import ExcelExport from '../components/excelExport';
+import { Spinner } from '@material-tailwind/react';
 
 const Show = () => {
 
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-    const itemsPerPage = 10;
+    const [loading, setLoading] = useState(false);
+    const itemsPerPage = 15;
 
     const deleteAll = () => {
         const url = 'http://127.0.0.1:8001/api/delete';
@@ -23,7 +25,7 @@ const Show = () => {
     //     const url = 'http://127.0.0.1:8001/api/download';
     //     axios.get(url)
     //         .then((response) => {
-                
+
     //             console.log(Array.isArray(response) );
     //         setData(response);
     //     }).catch((error) => {
@@ -51,7 +53,7 @@ const Show = () => {
     //     }
     // ]
     const showData = async (page) => {
-        const url = 'http://127.0.0.1:8001/api/show?page=' + page + '&itemsPerPage=' + itemsPerPage;
+        const url = 'https://dash.rajkushdev.com/public/api/show?page=' + page + '&itemsPerPage=' + itemsPerPage;
         await axios.get(url, {
             headers: {
                 'Content-Type': 'application/json',
@@ -64,12 +66,12 @@ const Show = () => {
                 console.log(response);
                 response = Array.from(response.data.data.data);
                 setData(response);
-                console.log(data);  
+                console.log(data);
             }).catch((error) => {
                 console.log(error);
             })
     }
-    
+
     useEffect(() => {
         showData(currentPage);
     }, [currentPage]);
@@ -86,71 +88,77 @@ const Show = () => {
         }
     };
 
-  return (
-    <>
-        <div className='w-4/5 absolute right-0 top-20 bg-gray-100 text-gray-800 h-screen p-5'>
+    return (
+        <>
+            {loading && <p className='w-screen h-screen flex justify-center items-center bg-gray-100'>
+                <Spinner className='w-16 h-16 text-blue-500'/>
+            </p>
+            }
+            <div className='w-[100%] lg:w-4/5 absolute right-0 top-20 bg-gray-100 text-gray-800 h-full p-5 overflow-auto'>
 
-            <h2 className='text-2xl font-bold text-center py-10'>Show</h2>
-            <button
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2'> <ExcelExport
-            data={data} /> </button>
-            <button
-            onClick={deleteAll}
-             className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2 mx-2'>Delete All</button>
-            <table className='w-4/5 border-collapse border-2 overflow-y-scroll'>
-                <tr className='border py-2 my-1'>
-                    <th>Title</th>
-                    <th>Start year</th>
-                    <th>End year</th>
-                    <th>city</th>
-                    <th>region</th>
-                    <th>country</th>
-                    <th>intensity</th>
-                    <th>likelihood</th>
-                    <th>relevance</th>
-                    <th>topic</th>
-                    <th>sector</th>
-                    <th>source</th>
-                    <th>url</th>
-                    <th>pest</th>
-                    <th>swot</th>
-                </tr>
-                {data.length === 0 && <tr className='text-center'><td colSpan={15}>No data found</td></tr>}
-                { data && data.map((item, index) => (                
-                <tr key={index} className='text-center py-2 my-1'>
-                    <td>{item.title}</td>
-                    <td>{item.start_year}</td>
-                    <td>{item.end_year}</td>
-                    <td>{item.city}</td>
-                    <td>{item.region}</td>
-                    <td>{item.country}</td>
-                    <td>{item.intensity}</td>
-                    <td>{item.likelihood}</td>
-                    <td>{item.relevance}</td>
-                    <td>{item.topic}</td>
-                    <td>{item.sector}</td>
-                    <td>{item.source}</td>
-                    <td>{item.url}</td>
-                    <td>{item.pest}</td>
-                    <td>{item.swot}</td>
-                </tr>
-                ))
-                }
-            </table>
-            <div className='flex justify-ccenter my-5 items-center gap-5 mx-auto w-full'>
-                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-                onClick={handlePreviousPage} disabled={currentPage === 1}>
-                    Previous
-                </button>
-                <span> Page {currentPage} of {totalPages} </span>
-                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' 
-                onClick={handleNextPage} disabled={currentPage === totalPages}>
-                    Next
-                </button>
+                <h2 className='text-2xl font-bold text-center py-10'>Show</h2>
+                <button
+                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2'> <ExcelExport
+                        data={data} /> </button>
+                <button
+                    onClick={deleteAll}
+                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2 mx-2'>Delete All</button>
+                <div className='overflow-x-auto'>
+                    <table className='min-w-full border-collapse border-2 text-[10px] lg:text-md '>
+                        <tr className='border py-2 my-1'>
+                            <th>Title</th>
+                            <th>Start year</th>
+                            <th>End year</th>
+                            <th>city</th>
+                            <th>region</th>
+                            <th>country</th>
+                            <th>intensity</th>
+                            <th>likelihood</th>
+                            <th>relevance</th>
+                            <th>topic</th>
+                            <th>sector</th>
+                            <th>source</th>
+                            <th>url</th>
+                            <th>pest</th>
+                            <th>swot</th>
+                        </tr>
+                        {data.length === 0 && <tr className='text-center'><td colSpan={15} className='py-2'>No data found</td></tr>}
+                        {data && data.map((item, index) => (
+                            <tr key={index} className='text-center py-2 my-1'>
+                                <td>{item.title}</td>
+                                <td>{item.start_year}</td>
+                                <td>{item.end_year}</td>
+                                <td>{item.city}</td>
+                                <td>{item.region}</td>
+                                <td>{item.country}</td>
+                                <td>{item.intensity}</td>
+                                <td>{item.likelihood}</td>
+                                <td>{item.relevance}</td>
+                                <td>{item.topic}</td>
+                                <td>{item.sector}</td>
+                                <td>{item.source}</td>
+                                <td className='w-[100px] max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap'>{item.url}</td>
+                                <td>{item.pest}</td>
+                                <td>{item.swot}</td>
+                            </tr>
+                        ))
+                        }
+                    </table>
+                </div>
+                <div className='flex justify-center my-5 items-center gap-5 mx-auto w-full'>
+                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                        onClick={handlePreviousPage} disabled={currentPage === 1}>
+                        Previous
+                    </button>
+                    <span> Page {currentPage} of {totalPages} </span>
+                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                        onClick={handleNextPage} disabled={currentPage === totalPages}>
+                        Next
+                    </button>
+                </div>
             </div>
-        </div>
-    </>
-  )
+        </>
+    )
 }
 
 export default Show

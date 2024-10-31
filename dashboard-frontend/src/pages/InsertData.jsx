@@ -25,10 +25,10 @@ const InsertData = () => {
 
     return (
         <>
-            <div className="w-4/5 mx-auto absolute top-20 right-0 px-10 py-5">
+            <div className="w-full lg:w-[80%] mx-auto absolute top-20 right-0 px-10 py-5">
 
                 <h2 className="text-2xl font-bold text-center py-10">Insert Data</h2>
-                <form className="mt-5 flex gap-5 items-center justify-center"
+                <form className="w-full mx-5 mt-5 flex gap-5 items-center justify-center"
                 onSubmit={handleUpload}>
 
                     <ExcelImport setData={setData} />

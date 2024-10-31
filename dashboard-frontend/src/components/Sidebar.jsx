@@ -30,7 +30,7 @@ const Sidebar = () => {
             :(<ArrowRightEndOnRectangleIcon
                 onClick={() => setIsOpen(!isOpen)} className='lg:hidden z-50 w-12 h-12 absolute top-24 left-0 text-[#6e6161] hover:text-[#413a3a] cursor-pointer hover:shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] p-2 rounded ' />)
         }
-            <div className={`w-[300px] absolute lg:top-[76px] top-[87px] z-10 bg-[#613e59] text-white h-screen py-5 ${isOpen ? 'ml-0' : 'ml-[-300px]'} duration-500 transition-all shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)]`}>
+            <div className={`w-[300px] absolute lg:top-[76px] top-[80px] z-10 bg-[#613e59] text-white h-screen py-5 ${isOpen ? 'ml-0' : 'ml-[-300px]'} duration-500 transition-all shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)]`}>
                 <h2 className='text-xl font-bold text-center'>Sidebar</h2>
                 <ul className='flex flex-col gap-3 px-5 mt-5 text-lg text-center'>
                     <li className='hover:text-[#413a3a] cursor-pointer hover:bg-[#f7d2cf] p-2 rounded '>

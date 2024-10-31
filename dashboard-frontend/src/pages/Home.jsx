@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import PieChart from '../components/PieChart';
 import {Spinner} from '@material-tailwind/react';
-import { count, select } from 'd3';
 
 const Home = () => {
+
+  const url = 'https://dash.rajkushdev.com/public/api';
 
   // API State Variables
   const [data, setData] = useState([])
@@ -43,7 +44,7 @@ const Home = () => {
   ]
 
   useEffect(() => {
-    axios.get('https://dash.rajkushdev.com/public/api/getAllData').then((res) => {
+    axios.get(`${url}/getAllData`).then((res) => {
       console.log(res.data);
       res = Array.from(res.data.data);
       setData(res);
@@ -92,7 +93,7 @@ const Home = () => {
 
   useEffect(() => {
 
-    axios.post('https://dash.rajkushdev.com/public/api/filter', { pests: selectedPest }).then((res) => {
+    axios.post(`${url}/filter`, { pests: selectedPest }).then((res) => {
       console.log(res.data);
       res = Array.from(res.data.data);
       setData(res);

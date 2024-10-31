@@ -19,7 +19,7 @@ const ExcelImport = ({ setData }) => {
     };
 
     return (
-        <div>
+        <div className='w-[70%] md:w-[30%]'>
             <input type="file" onChange={handleFileUpload} accept=".xlsx, .xls, .csv" />
             {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
             {/* <input type="hidden" name="" value={data} /> */}
