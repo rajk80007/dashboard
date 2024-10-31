@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import PieChart from '../components/PieChart';
+import {Spinner} from '@material-tailwind/react';
 import { count, select } from 'd3';
 
 const Home = () => {
@@ -42,7 +43,7 @@ const Home = () => {
   ]
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8001/api/getAllData').then((res) => {
+    axios.get('https://dash.rajkushdev.com/public//api/getAllData').then((res) => {
       console.log(res.data);
       res = Array.from(res.data.data);
       setData(res);
@@ -91,7 +92,7 @@ const Home = () => {
 
   useEffect(() => {
 
-    axios.post('http://127.0.0.1:8001/api/filter', { pests: selectedPest }).then((res) => {
+    axios.post('https://dash.rajkushdev.com/public/api/filter', { pests: selectedPest }).then((res) => {
       console.log(res.data);
       res = Array.from(res.data.data);
       setData(res);
@@ -132,7 +133,9 @@ const Home = () => {
 
         {
           loading ? (
-            <h1 className='text-center'>Loading...</h1>
+            <h1 className='flex justify-center fixed z-50 top-0 left-0 items-center w-screen h-screen bg-gray-100 opacity-50'>
+              <Spinner className='h-16 w-16 text-gray-900/50' />
+            </h1>
           ) : (
             <div className='w-full h-full overflow-y-auto grid grid-cols-1 md:grid-cols-4 justify-items-center gap-1'>
               {/* <div className='col-span-1'> */}
