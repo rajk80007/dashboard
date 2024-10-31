@@ -34,6 +34,13 @@ class InsightController extends Controller
         }
 
     public function filter(Request $request){
+        if(!$request->pests){
+            $data = Insight::all();
+            return response([
+                'data' => $data,
+                'status' => 'success',
+            ]);
+        }
         $data = Insight::where('pest', $request->pests)->get();
         
         return response([

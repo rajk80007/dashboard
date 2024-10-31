@@ -3,20 +3,27 @@ import * as d3 from 'd3';
 
 const PieChart = ({ data, width = 400, height = 400 }) => {
     const svgRef = useRef();
-    const colorMapRef = useRef({});
+    const colorMap = useMemo(() => {
+        const uniqueNames = Array.from(new Set(data.map(d => d.name)));
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        return uniqueNames.reduce((map, name) => {
+            map[name] = colorScale(name);
+            return map;
+    }, {});
+    }, [data]);
 
      // Define color scale
         // const color = d3.scaleOrdinal()
         // .domain(filteredData.map(d => d.name))
         // .range(d3.schemeCategory10);
 
-        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        // const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-        data.forEach(d => {
-            if (!colorMapRef.current[d.name]) {
-                colorMapRef.current[d.name] = colorScale(d.name);
-            }
-        });
+        // data.forEach(d => {
+        //     if (!colorMapRef.current[d.name]) {
+        //         colorMapRef.current[d.name] = colorScale(d.name);
+        //     }
+        // });
         
 
         // const colorMap = useMemo(() => {
@@ -58,7 +65,7 @@ const PieChart = ({ data, width = 400, height = 400 }) => {
             .enter()
             .append("path")
             .attr("d", arc)
-            .attr("fill", d => colorMapRef.current[d.data.name])
+            .attr("fill", d => colorMap[d.data.name])
             .attr("stroke", "white")
             .style("stroke-width", "2px");
 
@@ -77,8 +84,8 @@ const PieChart = ({ data, width = 400, height = 400 }) => {
             .style('fill', 'white')
             .style('font-size', '12px')
             .style('font-weight', 'bold')
-            .text(d => `${filteredData[d.index].name}: ${filteredData[d.index].count}`);
-    }, [data, width, height]);
+            .text(d => `${d.data.name}: ${d.data.count}`);
+    }, [data, width, height, colorMap]);
 
     return <svg ref={svgRef}></svg>;
 };
