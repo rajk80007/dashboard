@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Header = () => {
   return (
     <>
-        <nav class="bg-black text-white flex  mx-auto p-4 rounded-sm">
+        <nav class="bg-black text-white flex w-screen mx-auto p-4 rounded-sm">
         <h1 className='text-xl w-1/2'>
             <Link to='/'>
             Dashboard Analytics
