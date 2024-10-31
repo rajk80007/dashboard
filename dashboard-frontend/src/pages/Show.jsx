@@ -94,17 +94,20 @@ const Show = () => {
                 <Spinner className='w-16 h-16 text-blue-500'/>
             </p>
             }
-            <div className='w-[100%] lg:w-4/5 absolute right-0 top-20 bg-gray-100 text-gray-800 h-full p-5 overflow-auto'>
+            <div className='w-[100%] lg:w-3/4 absolute right-0 top-20 bg-gray-100 text-gray-800 h-full p-5 overflow-auto'>
 
                 <h2 className='text-2xl font-bold text-center py-10'>Show</h2>
-                <button
-                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2'> <ExcelExport
-                        data={data} /> </button>
+                <div className='flex gap-5 items-center justify-center'>
+                <div
+                    className='bg-blue-500 w-[150px] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2'> <ExcelExport
+                        data={data} /> </div>
                 <button
                     onClick={deleteAll}
                     className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-2 mx-2'>Delete All</button>
+                </div>
                 <div className='overflow-x-auto'>
                     <table className='min-w-full border-collapse border-2 text-[10px] lg:text-md '>
+                        <thead>
                         <tr className='border py-2 my-1'>
                             <th>Title</th>
                             <th>Start year</th>
@@ -122,6 +125,8 @@ const Show = () => {
                             <th>pest</th>
                             <th>swot</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         {data.length === 0 && <tr className='text-center'><td colSpan={15} className='py-2'>No data found</td></tr>}
                         {data && data.map((item, index) => (
                             <tr key={index} className='text-center py-2 my-1'>
@@ -143,6 +148,7 @@ const Show = () => {
                             </tr>
                         ))
                         }
+                        </tbody>
                     </table>
                 </div>
                 <div className='flex justify-center my-5 items-center gap-5 mx-auto w-full'>
