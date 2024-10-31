@@ -53,7 +53,7 @@ const Show = () => {
     //     }
     // ]
     const showData = async (page) => {
-        const url = 'http://127.0.0.1:8001/api/show?page=' + page + '&itemsPerPage=' + itemsPerPage;
+        const url = 'https://dash.rajkushdev.com/public/api/show?page=' + page + '&itemsPerPage=' + itemsPerPage;
         await axios.get(url, {
             headers: {
                 'Content-Type': 'application/json',
