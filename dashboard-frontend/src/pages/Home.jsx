@@ -43,7 +43,7 @@ const Home = () => {
   ]
 
   useEffect(() => {
-    axios.get('https://dash.rajkushdev.com/public//api/getAllData').then((res) => {
+    axios.get('https://dash.rajkushdev.com/public/api/getAllData').then((res) => {
       console.log(res.data);
       res = Array.from(res.data.data);
       setData(res);
