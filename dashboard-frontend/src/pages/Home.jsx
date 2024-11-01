@@ -235,7 +235,7 @@ const Home = () => {
                       <select name="" id="" defaultValue={""}
                         onChange={(e) => setTopic(e.target.value)}
                         className='overflow-y-auto border-2 border-[#67cf67] rounded p-2 bg-[#413a3a] text-[#ffffff]'>
-                        <option value="" disabled>select Topic</option>
+                        <option value="" disabled selected>select Topic</option>
                         {
                           topicsList && topicsList.map((item, index) => (
                             <option key={index} value={item}
