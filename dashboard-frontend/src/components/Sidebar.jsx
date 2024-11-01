@@ -34,17 +34,17 @@ const Sidebar = () => {
                 <h2 className='text-xl font-bold text-center'>Sidebar</h2>
                 <ul className='flex flex-col gap-3 px-5 mt-5 text-lg text-center'>
                     <li className='hover:text-[#413a3a] cursor-pointer hover:bg-[#f7d2cf] p-2 rounded '>
-                       <Link to='/' onClick={() => document.getElementById('sidebar').classList.toggle('ml-[-300px]') && document.getElementById('openBtn').classList.toggle('left-64') } >
+                       <Link to='/'  >
                         Analytics
                        </Link>
                     </li>
                     <li className='hover:text-[#413a3a] cursor-pointer hover:bg-[#f7d2cf] p-2 rounded '>
-                       <Link to='/insert' onClick={() => document.getElementById('sidebar').classList.toggle('ml-[-300px]')&& document.getElementById('openBtn').classList.toggle('left-64')}>
+                       <Link to='/insert' >
                         Insert Data
                        </Link>
                     </li>
                     <li className='hover:text-[#413a3a] cursor-pointer hover:bg-[#f7d2cf] p-2 rounded '>
-                       <Link to='/show' onClick={() => document.getElementById('sidebar').classList.toggle('ml-[-300px]')&& document.getElementById('openBtn').classList.toggle('left-64')}>
+                       <Link to='/show'>
                         show Data
                        </Link>
                     </li>
