@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import PieChart from '../components/PieChart';
-import {Spinner} from '@material-tailwind/react';
+import BarChart from '../components/BarChart';
+import { Spinner } from '@material-tailwind/react';
 
 const Home = () => {
 
@@ -30,7 +31,14 @@ const Home = () => {
   const [totalTopics, setTotalTopics] = useState(0);
   const [totalRegion, setTotalRegion] = useState(0);
   const [totalCity, setTotalCity] = useState(0);
-  // 
+
+  // for bar Chart Variables
+
+  const [selectPest, setSelectPest] = useState('');
+  const [topicsList, setTopicsList] = useState([]);
+  const [topic, setTopic] = useState('');
+  const [title, setTitle] = useState(0);
+
 
   const newData = [
     { name: 'intensity', count: intensityAverage },
@@ -41,7 +49,9 @@ const Home = () => {
     { name: 'topics', count: totalTopics },
     { name: 'region', count: totalRegion },
     { name: 'city', count: totalCity },
-  ]
+  ];
+
+  const [barData, setBarData] = useState([]);
 
   useEffect(() => {
     axios.get(`${url}/getAllData`).then((res) => {
@@ -120,12 +130,49 @@ const Home = () => {
 
       setCity(res.map((item) => item.city).filter(city => city !== ""));
       setTotalCity(city.length);
+
+      console.log(res);
+      const lengths = res.map((item) => item.title.length);
+      setBarData(lengths);
+
       // console.log(year);
     }).catch((err) => {
       console.log(err);
     })
 
   }, [selectedPest.length, data.length, pest.length, year.length, country.length, topics.length, region.length, city.length]);
+
+  useEffect(() => {
+    console.log(selectPest);
+    axios.post(`${url}/filter`, { pests: selectPest }).then((res) => {
+      console.log(res.data);
+      res = Array.from(res.data.data);
+      setTopicsList([...new Set(res)].map((item) => item.topic).filter(topic => topic !== ""));
+      handleTopic(topic);
+      const lengths = res.map((item) => item.title.length);
+      setBarData(lengths);
+
+    })
+  }, [topic, selectPest.length]);
+
+  const handleTopic = (topic) => {
+    axios.post(`${url}/filter-topic`, { pest: selectPest }).then((res) => {
+      console.log(res.data);
+      res = Array.from(res.data.data);
+      // const lengths = res.filter(item => item.topic === topic)
+      //                 .map(item => item.title.length);        
+      //                 setBarData(lengths);
+      setTitle(res.filter(item => item.topic === topic).length);
+      
+      
+      // res.map((item) => {
+      //   setBarData(res.filter(item => item.topic === topic).length);
+      // })
+      console.log(barData);
+    })
+
+  }
+
 
   return (
     <>
@@ -138,36 +185,75 @@ const Home = () => {
               <Spinner className='h-16 w-16 text-gray-900/50' />
             </h1>
           ) : (
-            <div className='w-full h-full overflow-y-auto grid grid-cols-1 md:grid-cols-4 justify-items-center gap-1'>
-              {/* <div className='col-span-1'> */}
-              <ul className='col-span-1 text-sm py-2 text-[#6f93e0] flex flex-col gap-2 border-2 border-[#413a3a] items-center justify-center font-bold'>
-                {pest && pest.map((item, index) => (
-                  <li key={index}
-                    onClick={() => togglePest(item)}
-                    className={`w-full px-5 py-2 rounded hover:bg-green-300 ${selectedPest.includes(item) ? 'bg-green-500 text-white' : ''} hover:text-white cursor-pointer`}>{item}</li>
-                ))}
-              </ul>
-              {/* </div> */}
-              <div className='flex flex-col col-span-2 items-center justify-center gap-5'>
-                <h3 className='text-center font-bold'>Total Records : {data.length}</h3>
+            <>
+              <div className='w-full h-full overflow-y-auto grid grid-cols-1 md:grid-cols-4 justify-items-center gap-1'>
+                {/* <div className='col-span-1'> */}
+                <ul className='col-span-1 text-sm py-2 text-[#6f93e0] flex flex-col gap-2 border-2 border-[#413a3a] items-center justify-center font-bold'>
+                  {pest && pest.map((item, index) => (
+                    <li key={index}
+                      onClick={() => togglePest(item)}
+                      className={`w-full px-5 py-2 rounded hover:bg-green-300 ${selectedPest.includes(item) ? 'bg-green-500 text-white' : ''} hover:text-white cursor-pointer`}>{item}</li>
+                  ))}
+                </ul>
+                {/* </div> */}
+                <div className='flex flex-col col-span-2 items-center justify-center gap-5'>
+                  <h3 className='text-center font-bold'>Total Records : {data.length}</h3>
 
-                <div className='flex gap-2 scale-75 lg:scale-100'>
+                  <div className='flex gap-2 scale-75 lg:scale-100'>
 
-                  <PieChart data={newData} className='w-full mx-2' />
+                    <PieChart data={newData} className='w-full mx-2' />
+                  </div>
                 </div>
-              </div>
-              <ul className='flex flex-col gap-3 px-5 mt-5 text-sm col-span-1
+                <ul className='flex flex-col gap-3 px-5 mt-5 text-sm col-span-1
                   border-2 border-[#413a3a] items-center justify-center font-bold text-[#6f93e0] text-center'>
-                <li>intensity : {intensityAverage}</li>
-                <li>likelihood : {likelihoodAverage}</li>
-                <li>relevance : {relevanceAverage}</li>
-                <li>year : {yearAverage}</li>
-                <li>country : {totalCountry}</li>
-                <li>topics : {totalTopics}</li>
-                <li>region : {totalRegion}</li>
-                <li>city : {totalCity}</li>
-              </ul>
-            </div>
+                  <li>intensity : {intensityAverage}</li>
+                  <li>likelihood : {likelihoodAverage}</li>
+                  <li>relevance : {relevanceAverage}</li>
+                  <li>year : {yearAverage}</li>
+                  <li>country : {totalCountry}</li>
+                  <li>topics : {totalTopics}</li>
+                  <li>region : {totalRegion}</li>
+                  <li>city : {totalCity}</li>
+                </ul>
+              </div>
+              <div className='w-3/4 h-full overflow-y-auto flex flex-col mx-auto py-5 my-5 justify-items-center gap-1'>
+                <div className='flex flex-col w-full items-center justify-center gap-5 '>
+                  <h3 className='text-center font-bold text-2xl py-5 w-full'>Year Analysis</h3>
+                  <div className='w-full'>
+                    <form className='flex gap-2 justify-center flex-col lg:flex-row items-center mx-auto w-full'>
+                      <select name="" id="" defaultValue={""}
+                        onChange={(e) => setSelectPest(e.target.value)}
+                        className='border-2 border-[#67cf67] rounded p-2 bg-[#413a3a] text-[#ffffff]'>
+                        <option value="" disabled>select Pestle</option>
+                        {
+                          pest && pest.map((item, index) => (
+                            <option key={index} value={item}
+                            >{item}</option>
+                          ))
+                        }
+                      </select>
+                      <select name="" id="" defaultValue={""}
+                        onChange={(e) => setTopic(e.target.value)}
+                        className='overflow-y-auto border-2 border-[#67cf67] rounded p-2 bg-[#413a3a] text-[#ffffff]'>
+                        <option value="" disabled>select Topic</option>
+                        {
+                          topicsList && topicsList.map((item, index) => (
+                            <option key={index} value={item}
+                            >{item}</option>
+                          ))
+                        }
+                      </select>
+                      <div className='w-[200px] border-2 border-[#67cf67] rounded p-2 bg-[#413a3a] text-[#ffffff] flex flex-col justify-center items-center'>Title : {title}</div>
+                    </form>
+                  </div>
+                  <BarChart data={barData} className='w-full mx-2' />
+                    Total Records : { barData.length }
+
+                </div>
+
+              </div>
+            </>
+
           )
         }
 
