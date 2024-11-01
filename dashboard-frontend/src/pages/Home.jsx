@@ -55,12 +55,12 @@ const Home = () => {
 
   useEffect(() => {
     axios.get(`${url}/getAllData`).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       res = Array.from(res.data.data);
       setData(res);
       setPest([...new Set(res.map(item => item.pest).filter(pest => pest !== ""))]);
       setSelectedPest(Array.from(pest));
-      console.log(pest);
+      // console.log(pest);
       const intensityArr = res.map((item) => Number(item.intensity));
       const likelihoodArr = res.map((item) => Number(item.likelihood));
       const relevanceArr = res.map((item) => Number(item.relevance));
@@ -90,10 +90,10 @@ const Home = () => {
 
       setCity(res.map((item) => item.city).filter(city => city !== ""));
       setTotalCity(city.length);
-      console.log(region);
+      // console.log(region);
       // console.log(year);
     }).catch((err) => {
-      console.log(err);
+      // console.log(err);
     });
     setLoading(false);
   }, [pest.length]);
@@ -110,7 +110,7 @@ const Home = () => {
   useEffect(() => {
 
     axios.post(`${url}/filter`, { pests: selectedPest }).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       res = Array.from(res.data.data);
       setData(res);
       const intensityArr = res.map((item) => Number(item.intensity));
@@ -142,21 +142,21 @@ const Home = () => {
       setCity(res.map((item) => item.city).filter(city => city !== ""));
       setTotalCity(city.length);
 
-      console.log(res);
+      // console.log(res);
       const lengths = res.map((item) => item.title.length);
       setBarData(lengths);
       setLoading(false);
       // console.log(year);
     }).catch((err) => {
-      console.log(err);
+      // console.log(err);
     })
 
   }, [selectedPest.length, data.length, pest.length, year.length, country.length, topics.length, region.length, city.length]);
 
   useEffect(() => {
-    console.log(selectPest);
+    // console.log(selectPest);
     axios.post(`${url}/filter`, { pests: selectPest }).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       res = Array.from(res.data.data);
       setTopicsList([...new Set(res)].map((item) => item.topic).filter(topic => topic !== ""));
       handleTopic(topic);
@@ -168,7 +168,7 @@ const Home = () => {
 
   const handleTopic = (topic) => {
     axios.post(`${url}/filter`, { pests: selectPest }).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       res = Array.from(res.data.data);
       // const lengths = res.filter(item => item.topic === topic)
       //                 .map(item => item.title.length);        
@@ -179,7 +179,7 @@ const Home = () => {
       // res.map((item) => {
       //   setBarData(res.filter(item => item.topic === topic).length);
       // })
-      console.log(barData);
+      // console.log(barData);
     })
 
   }
