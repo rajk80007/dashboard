@@ -61,17 +61,22 @@ const Home = () => {
       setPest([...new Set(res.map(item => item.pest).filter(pest => pest !== ""))]);
       setSelectedPest(Array.from(pest));
       console.log(pest);
-      setIntensity(res.map((item) => Number(item.intensity)));
-      const totalIntensity = intensity.reduce((a, b) => a + b, 0)
+      const intensityArr = res.map((item) => Number(item.intensity));
+      const likelihoodArr = res.map((item) => Number(item.likelihood));
+      const relevanceArr = res.map((item) => Number(item.relevance));
+      const yearArr = res.map((item) => (item.end_year && item.start_year) ? (Number(item.end_year) - Number(item.start_year)) : 0);
+      
+      setIntensity(intensityArr);
+      const totalIntensity = intensityArr.reduce((a, b) => a + b, 0)
       setIntensityAverage((totalIntensity / intensity.length).toFixed(2));
-      setLikelihood(res.map((item) => Number(item.likelihood)));
-      const totalLikelihood = likelihood.reduce((a, b) => a + b, 0)
+      setLikelihood(likelihoodArr);
+      const totalLikelihood = likelihoodArr.reduce((a, b) => a + b, 0)
       setLikelihoodAverage((totalLikelihood / likelihood.length).toFixed(2));
-      setRelevance(res.map((item) => Number(item.relevance)));
-      const totalRelevance = relevance.reduce((a, b) => a + b, 0)
+      setRelevance(relevanceArr);
+      const totalRelevance = relevanceArr.reduce((a, b) => a + b, 0)
       setRelevanceAverage((totalRelevance / relevance.length).toFixed(2));
-      setYear(res.map((item) => (item.end_year && item.start_year) ? (Number(item.end_year) - Number(item.start_year)) : 0));
-      const totalYear = year.reduce((a, b) => a + b, 0)
+      setYear(yearArr);
+      const totalYear = yearArr.reduce((a, b) => a + b, 0)
       setYearAverage((totalYear / year.length).toFixed(2));
 
       setCountry(res.map((item) => item.country).filter(country => country !== ""));
@@ -99,6 +104,7 @@ const Home = () => {
     } else {
       setSelectedPest([...selectedPest, item]);
     }
+    setLoading(true);
   }
 
   useEffect(() => {
@@ -107,17 +113,22 @@ const Home = () => {
       console.log(res.data);
       res = Array.from(res.data.data);
       setData(res);
-      setIntensity(res.map((item) => Number(item.intensity)));
-      const totalIntensity = intensity.reduce((a, b) => a + b, 0)
+      const intensityArr = res.map((item) => Number(item.intensity));
+      const likelihoodArr = res.map((item) => Number(item.likelihood));
+      const relevanceArr = res.map((item) => Number(item.relevance));
+      const yearArr = res.map((item) => (item.end_year && item.start_year) ? (Number(item.end_year) - Number(item.start_year)) : 0);
+           
+      setIntensity(intensityArr);
+      const totalIntensity = intensityArr.reduce((a, b) => a + b, 0)
       setIntensityAverage((totalIntensity / intensity.length).toFixed(2));
-      setLikelihood(res.map((item) => Number(item.likelihood)));
-      const totalLikelihood = likelihood.reduce((a, b) => a + b, 0)
+      setLikelihood(likelihoodArr);
+      const totalLikelihood = likelihoodArr.reduce((a, b) => a + b, 0)
       setLikelihoodAverage((totalLikelihood / likelihood.length).toFixed(2));
-      setRelevance(res.map((item) => Number(item.relevance)));
-      const totalRelevance = relevance.reduce((a, b) => a + b, 0)
+      setRelevance(relevanceArr);
+      const totalRelevance = relevanceArr.reduce((a, b) => a + b, 0)
       setRelevanceAverage((totalRelevance / relevance.length).toFixed(2));
-      setYear(res.map((item) => (item.end_year && item.start_year) ? (Number(item.end_year) - Number(item.start_year)) : 0));
-      const totalYear = year.reduce((a, b) => a + b, 0)
+      setYear(yearArr);
+      const totalYear = yearArr.reduce((a, b) => a + b, 0)
       setYearAverage((totalYear / year.length).toFixed(2));
       setCountry(res.map((item) => item.country).filter(country => country !== ""));
       setTotalCountry(country.length);
@@ -134,7 +145,7 @@ const Home = () => {
       console.log(res);
       const lengths = res.map((item) => item.title.length);
       setBarData(lengths);
-
+      setLoading(false);
       // console.log(year);
     }).catch((err) => {
       console.log(err);
@@ -235,7 +246,7 @@ const Home = () => {
                       <select name="" id="" defaultValue={""}
                         onChange={(e) => setTopic(e.target.value)}
                         className='overflow-y-auto border-2 border-[#67cf67] rounded p-2 bg-[#413a3a] text-[#ffffff]'>
-                        <option value="" disabled selected>select Topic</option>
+                        <option value="" disabled >select Topic</option>
                         {
                           topicsList && topicsList.map((item, index) => (
                             <option key={index} value={item}
