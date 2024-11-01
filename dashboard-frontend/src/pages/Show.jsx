@@ -12,7 +12,7 @@ const Show = () => {
     const itemsPerPage = 15;
 
     const deleteAll = () => {
-        const url = 'http://127.0.0.1:8001/api/delete';
+        const url = 'https://dash.rajkushdev.com/public/api/delete';
         axios.get(url)
             .then((response) => {
                 console.log(response);
