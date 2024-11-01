@@ -156,7 +156,7 @@ const Home = () => {
   }, [topic, selectPest.length]);
 
   const handleTopic = (topic) => {
-    axios.post(`${url}/filter-topic`, { pest: selectPest }).then((res) => {
+    axios.post(`${url}/filter`, { pests: selectPest }).then((res) => {
       console.log(res.data);
       res = Array.from(res.data.data);
       // const lengths = res.filter(item => item.topic === topic)
