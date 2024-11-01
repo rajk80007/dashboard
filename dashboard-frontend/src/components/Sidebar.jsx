@@ -32,17 +32,21 @@ const Sidebar = () => {
         }
             <div id='sidebar' className={`w-[300px] absolute lg:top-[76px] top-[80px] z-10 bg-[#613e59] text-white h-screen py-5 ${isOpen ? 'ml-0' : 'ml-[-300px]'} duration-500 transition-all shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)]`}>
                 <h2 className='text-xl font-bold text-center'>Sidebar</h2>
-                <ul className='flex flex-col gap-3 px-5 mt-5 text-lg text-center'>
+                <ul className='flex flex-col gap-3 px-5 mt-5 text-lg text-center'
+                onClick={() => setIsOpen(!isOpen)}>
+                    
                     <li className='hover:text-[#413a3a] cursor-pointer hover:bg-[#f7d2cf] p-2 rounded '>
                        <Link to='/'  >
                         Analytics
                        </Link>
                     </li>
+
                     <li className='hover:text-[#413a3a] cursor-pointer hover:bg-[#f7d2cf] p-2 rounded '>
                        <Link to='/insert' >
                         Insert Data
                        </Link>
                     </li>
+                    
                     <li className='hover:text-[#413a3a] cursor-pointer hover:bg-[#f7d2cf] p-2 rounded '>
                        <Link to='/show'>
                         show Data
